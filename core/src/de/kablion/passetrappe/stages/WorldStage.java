@@ -20,20 +20,19 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.kablion.passetrappe.PasseTrappe;
-import de.kablion.passetrappe.actors.Disk;
-import de.kablion.passetrappe.actors.ElasticBand;
-import de.kablion.passetrappe.actors.Ground;
-import de.kablion.passetrappe.actors.HoleSensor;
-import de.kablion.passetrappe.actors.Wall;
+import de.kablion.passetrappe.actors.OnFieldHUD;
+import de.kablion.passetrappe.actors.bodies.Disk;
+import de.kablion.passetrappe.actors.bodies.ElasticBand;
+import de.kablion.passetrappe.actors.bodies.Ground;
+import de.kablion.passetrappe.actors.bodies.HoleSensor;
+import de.kablion.passetrappe.actors.bodies.Wall;
 import de.kablion.passetrappe.utils.Player;
 
 import static de.kablion.passetrappe.utils.Constants.BAND_GAP;
 import static de.kablion.passetrappe.utils.Constants.BAND_WIDTH;
-import static de.kablion.passetrappe.utils.Constants.BIT_BAND;
 import static de.kablion.passetrappe.utils.Constants.BIT_BAND_LIMIT;
 import static de.kablion.passetrappe.utils.Constants.BIT_DISK;
 import static de.kablion.passetrappe.utils.Constants.BIT_HOLE;
-import static de.kablion.passetrappe.utils.Constants.BIT_WALL;
 import static de.kablion.passetrappe.utils.Constants.BOARD_HALF_HEIGHT;
 import static de.kablion.passetrappe.utils.Constants.BOARD_HALF_WIDTH;
 import static de.kablion.passetrappe.utils.Constants.DISKS_PER_COL;
@@ -60,6 +59,7 @@ public class WorldStage extends Stage {
     private Array<ElasticBand> elasticBands = new Array<ElasticBand>();
     private Ground ground;
     private HoleSensor holeSensor;
+    private OnFieldHUD onFieldHUD;
 
     private Player cheatingPlayer;
     private boolean cheaterDetected = false;
@@ -74,15 +74,16 @@ public class WorldStage extends Stage {
         world.clearForces();
         getCamera().position.set(0, 0, 0);
 
-        initBodies();
+        initActors();
         initListeners();
     }
 
-    private void initBodies() {
+    private void initActors() {
         initGround();
+        initWalls();
+        initOnFieldHUD();
         initDisks();
         initJoints();
-        initWalls();
         initHoleSensor();
         initElasticBands();
     }
@@ -95,6 +96,12 @@ public class WorldStage extends Stage {
     private void initHoleSensor() {
         holeSensor = new HoleSensor(app, this);
         addActor(holeSensor);
+    }
+
+    private void initOnFieldHUD() {
+        onFieldHUD = new OnFieldHUD(app,this);
+        addActor(onFieldHUD);
+
     }
 
     private void initDisks() {
@@ -319,6 +326,11 @@ public class WorldStage extends Stage {
         world.dispose();
         world = null;
 
+        if(onFieldHUD != null) {
+            onFieldHUD.dispose();
+        }
+        onFieldHUD = null;
+
         for (int i = 0; i < disks.size; i++) {
             disks.get(i).dispose();
         }
@@ -384,7 +396,7 @@ public class WorldStage extends Stage {
                         disk.pointerID = currentPointer;
                         Filter filter = new Filter();
                         filter.categoryBits = BIT_DISK;
-                        filter.maskBits = (short) (BIT_DISK | BIT_WALL | BIT_BAND | BIT_HOLE);
+                        filter.maskBits = (short) (fixture.getFilterData().maskBits & (~BIT_BAND_LIMIT)); // Delete BIT_BAND_LIMIT
                         fixture.setFilterData(filter);
                         return false;
                     }
@@ -457,7 +469,7 @@ public class WorldStage extends Stage {
 
                 Filter filter = new Filter();
                 filter.categoryBits = BIT_DISK;
-                filter.maskBits = (short) (BIT_DISK | BIT_WALL | BIT_BAND | BIT_BAND_LIMIT | BIT_HOLE);
+                filter.maskBits = (short) (disk.getBody().getFixtureList().get(0).getFilterData().maskBits | BIT_BAND_LIMIT); // Add BIT_BAND_LIMIT
                 disk.getBody().getFixtureList().get(0).setFilterData(filter);
 
                 return true;

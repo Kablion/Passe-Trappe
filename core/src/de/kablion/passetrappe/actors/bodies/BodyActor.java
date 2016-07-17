@@ -1,4 +1,4 @@
-package de.kablion.passetrappe.actors;
+package de.kablion.passetrappe.actors.bodies;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;

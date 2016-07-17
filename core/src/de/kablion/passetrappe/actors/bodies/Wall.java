@@ -1,4 +1,4 @@
-package de.kablion.passetrappe.actors;
+package de.kablion.passetrappe.actors.bodies;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,7 +17,7 @@ import static de.kablion.passetrappe.utils.Constants.BIT_WALL;
 import static de.kablion.passetrappe.utils.Constants.BOARD_HALF_HEIGHT;
 import static de.kablion.passetrappe.utils.Constants.BOARD_HALF_WIDTH;
 import static de.kablion.passetrappe.utils.Constants.HOLE_HALF_WIDTH;
-import static de.kablion.passetrappe.utils.Constants.TEXTURES_ATLAS;
+import static de.kablion.passetrappe.utils.Constants.TEXTURES_ATLAS_PATH;
 import static de.kablion.passetrappe.utils.Constants.WALL_CENTER_HALF_WIDTH;
 import static de.kablion.passetrappe.utils.Constants.WALL_HALF_WIDTH;
 import static de.kablion.passetrappe.utils.Constants.WALL_WIDTH;
@@ -111,7 +111,7 @@ public class Wall extends BodyActor {
                         -half_length, half_width,
                         half_length, half_width,
                         half_length, -half_width});
-        TextureRegion textureRegion = app.assets.get(TEXTURES_ATLAS, TextureAtlas.class).findRegion("wall_texture");
+        TextureRegion textureRegion = app.assets.get(TEXTURES_ATLAS_PATH, TextureAtlas.class).findRegion("wall_texture");
         sprite.setTextureRegion(textureRegion,
                 RepeatablePolygonSprite.WrapType.REPEAT_MIRRORED,
                 RepeatablePolygonSprite.WrapType.STRETCH);

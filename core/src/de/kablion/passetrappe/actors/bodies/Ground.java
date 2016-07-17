@@ -1,4 +1,4 @@
-package de.kablion.passetrappe.actors;
+package de.kablion.passetrappe.actors.bodies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;

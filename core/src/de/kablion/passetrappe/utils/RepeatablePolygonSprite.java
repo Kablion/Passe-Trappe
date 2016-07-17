@@ -189,6 +189,7 @@ public class RepeatablePolygonSprite implements Disposable {
                 if (v > 1.0f) v = 1.0f;
                 if (u < 0.0f) u = 0.0f;
                 if (v < 0.0f) v = 0.0f;
+                v=1-v;
                 // (col & 1 == 0) == true : col is even
                 if (wrapTypeX == WrapType.REPEAT_MIRRORED && (col & 1) != 0) u = 1 - u;
                 if (wrapTypeY == WrapType.REPEAT_MIRRORED && (row & 1) == 0) v = 1 - v;

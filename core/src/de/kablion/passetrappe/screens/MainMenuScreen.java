@@ -24,7 +24,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-import static de.kablion.passetrappe.utils.Constants.DEFAULT_FONT;
+import static de.kablion.passetrappe.utils.Constants.DEFAULT_FONT_PATH;
 import static de.kablion.passetrappe.utils.Constants.FONTS_PATH;
 import static de.kablion.passetrappe.utils.Constants.SKINS_PATH;
 import static de.kablion.passetrappe.utils.Constants.UI_HEIGHT;
@@ -110,7 +110,7 @@ public class MainMenuScreen implements Screen {
         mainMenuSkin = new Skin();
         mainMenuSkin.addRegions(app.assets.get(SKINS_PATH + "default.atlas", TextureAtlas.class));
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(FONTS_PATH + DEFAULT_FONT));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(DEFAULT_FONT_PATH));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         params.size = 50;

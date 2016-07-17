@@ -1,4 +1,4 @@
-package de.kablion.passetrappe.actors;
+package de.kablion.passetrappe.actors.bodies;
 
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -27,7 +27,7 @@ import static de.kablion.passetrappe.utils.Constants.BIT_DISK;
 import static de.kablion.passetrappe.utils.Constants.BIT_HOLE;
 import static de.kablion.passetrappe.utils.Constants.BIT_WALL;
 import static de.kablion.passetrappe.utils.Constants.DISK_RADIUS;
-import static de.kablion.passetrappe.utils.Constants.TEXTURES_ATLAS;
+import static de.kablion.passetrappe.utils.Constants.TEXTURES_ATLAS_PATH;
 
 public class Disk extends BodyActor {
 
@@ -85,7 +85,7 @@ public class Disk extends BodyActor {
     private void initSprite(boolean forCheater) {
         sprite = new RepeatablePolygonSprite();
         sprite.setVertices(ShapeUtils.buildCircle(DISK_RADIUS, 20));
-        sprite.setTextureRegion(app.assets.get(TEXTURES_ATLAS, TextureAtlas.class).findRegion("disk_texture"));
+        sprite.setTextureRegion(app.assets.get(TEXTURES_ATLAS_PATH, TextureAtlas.class).findRegion("disk_texture"));
         sprite.setTextureSize(15, 15);
         float rndX = MathUtils.random(sprite.getTextureWidth() - DISK_RADIUS * 2);
         float rndY = MathUtils.random(sprite.getTextureHeight() - DISK_RADIUS * 2);
@@ -96,14 +96,14 @@ public class Disk extends BodyActor {
                         -DISK_RADIUS,DISK_RADIUS,
                         DISK_RADIUS,DISK_RADIUS,
                         DISK_RADIUS,-DISK_RADIUS});
-        riffleSprite.setTextureRegion(app.assets.get(TEXTURES_ATLAS, TextureAtlas.class).findRegion("disk_riffle"),
+        riffleSprite.setTextureRegion(app.assets.get(TEXTURES_ATLAS_PATH, TextureAtlas.class).findRegion("disk_riffle"),
                 RepeatablePolygonSprite.WrapType.STRETCH,
                 RepeatablePolygonSprite.WrapType.STRETCH);
 
         if(forCheater) {
             cheaterSprite = new RepeatablePolygonSprite();
             cheaterSprite.setVertices(riffleSprite.getOriginalVertices());
-            cheaterSprite.setTextureRegion(app.assets.get(TEXTURES_ATLAS, TextureAtlas.class).findRegion("disk_cheater"),
+            cheaterSprite.setTextureRegion(app.assets.get(TEXTURES_ATLAS_PATH, TextureAtlas.class).findRegion("disk_cheater"),
                     RepeatablePolygonSprite.WrapType.STRETCH,
                     RepeatablePolygonSprite.WrapType.STRETCH);
         }

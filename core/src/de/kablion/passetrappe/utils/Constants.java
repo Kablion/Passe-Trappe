@@ -45,6 +45,10 @@ public class Constants {
     public static final float FIRST_DISK_Y = WALL_CENTER_HALF_WIDTH + DISK_RADIUS;
     public static final int DISKS_PER_COL = (int) Math.floor((BOARD_HALF_HEIGHT - BAND_GAP - BAND_WIDTH - WALL_CENTER_HALF_WIDTH) / (DISK_RADIUS * 2));
 
+    // OnFieldHUD Dimensions
+    public static final float OPPONENT_DISK_COUNTER_Y = (BOARD_HALF_HEIGHT-BAND_GAP-BAND_WIDTH-WALL_CENTER_HALF_WIDTH)*0.3f;
+    public static final float OWN_DISK_COUNTER_Y = -(BOARD_HALF_HEIGHT-BAND_GAP-BAND_WIDTH-WALL_CENTER_HALF_WIDTH)*0.7f;
+
     // COLLISION FILTER BITS
     public static final short BIT_GROUND = 1;
     public static final short BIT_DISK = 2;
@@ -60,8 +64,8 @@ public class Constants {
     public static final String SPRITESHEETS_PATH = "spritesheets/";
     public static final String SOUNDS_PATH = "sounds/";
 
-    public static final String TEXTURES_ATLAS = SPRITESHEETS_PATH + "textures.atlas";
+    public static final String TEXTURES_ATLAS_PATH = SPRITESHEETS_PATH + "textures.atlas";
 
-    public static final String DEFAULT_FONT = "Chewy.ttf";
+    public static final String DEFAULT_FONT_PATH = FONTS_PATH+"Chewy.ttf";
 
 }
