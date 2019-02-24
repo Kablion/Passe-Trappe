@@ -453,6 +453,13 @@ public class RepeatablePolygonSprite implements Disposable {
     }
 
     /**
+     * Sets the sprite's position in the world
+     */
+    public void setPosition(Vector2 position) {
+        setPosition(position.x,position.y);
+    }
+
+    /**
      * Sets the sprite's x position in the world
      */
     public void setX(float x) {

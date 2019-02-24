@@ -1,0 +1,19 @@
+menu.png
+size: 421, 600
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head_bg
+  rotate: false
+  xy: 0, 0
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+paper_bg
+  rotate: false
+  xy: 1, 0
+  size: 420, 600
+  orig: 420, 600
+  offset: 0, 0
+  index: -1

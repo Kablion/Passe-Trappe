@@ -8,7 +8,9 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 
 import de.kablion.passetrappe.PasseTrappe;
 import de.kablion.passetrappe.stages.HUDStage;
+import de.kablion.passetrappe.stages.MainMenuStage;
 import de.kablion.passetrappe.stages.WorldStage;
+import de.kablion.passetrappe.utils.GameState;
 
 public class GameScreen implements Screen {
 
@@ -17,30 +19,29 @@ public class GameScreen implements Screen {
     private InputMultiplexer multiplexer = new InputMultiplexer();
 
     private WorldStage worldStage;
+    private MainMenuStage mainMenuStage;
     private HUDStage hudStage;
+
+    private GameState gameState = GameState.LOADING;
 
     public GameScreen(final PasseTrappe app) {
         this.app = app;
         worldStage = new WorldStage(app);
+        mainMenuStage = new MainMenuStage(app);
         hudStage = new HUDStage(app);
     }
 
     @Override
     public void show() {
-        Box2D.init();
-
-        worldStage.reset();
-        hudStage.reset();
-        multiplexer.clear();
-        multiplexer.addProcessor(hudStage);
-        multiplexer.addProcessor(worldStage);
-
         Gdx.input.setInputProcessor(multiplexer);
+
+        setGameState(GameState.MAINMENU);
     }
 
     private void update(float delta) {
-        worldStage.act(delta);
-        hudStage.act(delta);
+        if(gameState == GameState.PLAY || gameState == GameState.MAINMENU) worldStage.act(delta);
+        if(gameState == GameState.PLAY) hudStage.act(delta);
+        if(gameState == GameState.MAINMENU) mainMenuStage.act(delta);
     }
 
     @Override
@@ -51,13 +52,39 @@ public class GameScreen implements Screen {
         update(delta);
 
         worldStage.draw();
-        hudStage.draw();
+        if(gameState == GameState.PLAY) hudStage.draw();
+        if(gameState == GameState.MAINMENU) mainMenuStage.draw();
+    }
+
+    public void setGameState(GameState gameState) {
+        if(gameState == this.gameState) return;
+        switch (gameState) {
+            case LOADING: {
+                break;
+            }
+            case MAINMENU: {
+                worldStage.reset();
+                hudStage.reset();
+                mainMenuStage.reset();
+                multiplexer.clear();
+                multiplexer.addProcessor(mainMenuStage);
+                break;
+            }
+            case PLAY: {
+                multiplexer.clear();
+                multiplexer.addProcessor(hudStage);
+                multiplexer.addProcessor(worldStage);
+                break;
+            }
+        }
+        this.gameState = gameState;
     }
 
     @Override
     public void resize(int width, int height) {
         worldStage.resize(width, height);
         hudStage.resize(width, height);
+        mainMenuStage.resize(width,height);
     }
 
     @Override

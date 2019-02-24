@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.kablion.passetrappe.PasseTrappe;
 
+import static de.kablion.passetrappe.utils.Constants.MENU_ATLAS_PATH;
 import static de.kablion.passetrappe.utils.Constants.SKINS_PATH;
 import static de.kablion.passetrappe.utils.Constants.TEXTURES_ATLAS_PATH;
 import static de.kablion.passetrappe.utils.Constants.UI_HEIGHT;
@@ -44,6 +45,7 @@ public class LoadingScreen implements Screen {
         // Skins and Spritesheets
         app.assets.load(SKINS_PATH + "default.atlas", TextureAtlas.class);
         app.assets.load(TEXTURES_ATLAS_PATH, TextureAtlas.class);
+        app.assets.load(MENU_ATLAS_PATH, TextureAtlas.class);
 
         // Sounds
     }
@@ -86,7 +88,7 @@ public class LoadingScreen implements Screen {
         stage.act();
         if (app.assets.update() & Math.abs(progressBar.getVisualValue() - progressBar.getMaxValue()) < 0.001f) {
             // If everything is load up continue to the MainMenu
-            app.setScreen(app.mainMenuScreen);
+            app.setScreen(app.gameScreen);
         }
     }
 

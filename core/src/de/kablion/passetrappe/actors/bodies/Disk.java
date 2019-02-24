@@ -26,7 +26,9 @@ import static de.kablion.passetrappe.utils.Constants.BIT_BAND_LIMIT;
 import static de.kablion.passetrappe.utils.Constants.BIT_DISK;
 import static de.kablion.passetrappe.utils.Constants.BIT_HOLE;
 import static de.kablion.passetrappe.utils.Constants.BIT_WALL;
+import static de.kablion.passetrappe.utils.Constants.CHEATER_EFFECT_OVER_SECONDS;
 import static de.kablion.passetrappe.utils.Constants.DISK_RADIUS;
+import static de.kablion.passetrappe.utils.Constants.CHEATER_SCALE_BY;
 import static de.kablion.passetrappe.utils.Constants.TEXTURES_ATLAS_PATH;
 
 public class Disk extends BodyActor {
@@ -63,6 +65,7 @@ public class Disk extends BodyActor {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
+        if(player == Player.ONE) bodyDef.angle = 180*MathUtils.degreesToRadians;
         body = worldStage.getWorld().createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
@@ -78,6 +81,7 @@ public class Disk extends BodyActor {
 
         body.createFixture(fixtureDef);
         body.setUserData(this);
+
 
         circle.dispose();
     }
@@ -106,6 +110,11 @@ public class Disk extends BodyActor {
             cheaterSprite.setTextureRegion(app.assets.get(TEXTURES_ATLAS_PATH, TextureAtlas.class).findRegion("disk_cheater"),
                     RepeatablePolygonSprite.WrapType.STRETCH,
                     RepeatablePolygonSprite.WrapType.STRETCH);
+
+            // Drop Effect via Scaling
+            sprite.scaleBy(CHEATER_SCALE_BY);
+            riffleSprite.scaleBy(CHEATER_SCALE_BY);
+            cheaterSprite.scaleBy(CHEATER_SCALE_BY);
         }
     }
 
@@ -115,7 +124,7 @@ public class Disk extends BodyActor {
         frictionJointDef.bodyA = worldStage.getGround().getBody();
         frictionJointDef.bodyB = body;
 
-        frictionJointDef.maxForce = 230f;
+        frictionJointDef.maxForce = 300f;
         frictionJointDef.maxTorque = 200f;
 
         frictionJoint = (FrictionJoint) worldStage.getWorld().createJoint(frictionJointDef);
@@ -130,9 +139,34 @@ public class Disk extends BodyActor {
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        if(body.getLinearVelocity().len() < 0.01f) {
+            throwedWithoutBand = false;
+        }
+
+        if(sprite.getScaleX() > 1) {
+            float scaleBy = -(CHEATER_SCALE_BY/CHEATER_EFFECT_OVER_SECONDS*delta);
+            sprite.scaleBy(scaleBy);
+            riffleSprite.scaleBy(scaleBy);
+            cheaterSprite.scaleBy(scaleBy);
+            if(sprite.getScaleX() < 1) {
+                sprite.setScale(1,1);
+                riffleSprite.setScale(1,1);
+                cheaterSprite.setScale(1,1);
+            }
+        }
+
+        if(sprite.getY() > 0) {
+            player = Player.ONE;
+        } else {
+            player = Player.TWO;
+        }
         riffleSprite.setPosition(sprite.getX(), sprite.getY());
-        if(cheaterSprite != null)
-        cheaterSprite.setPosition(sprite.getX(), sprite.getY());
+        riffleSprite.setRotation(sprite.getRotation());
+        if(cheaterSprite != null) {
+            cheaterSprite.setPosition(sprite.getX(), sprite.getY());
+            cheaterSprite.setRotation(sprite.getRotation());
+        }
     }
 
     @Override

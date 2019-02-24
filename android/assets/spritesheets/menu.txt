@@ -1,0 +1,33 @@
+menu.png
+size: 1578, 2078
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+board_bg
+  rotate: false
+  xy: 532, 532
+  size: 1046, 1546
+  orig: 1046, 1546
+  offset: 0, 0
+  index: -1
+head_bg
+  rotate: false
+  xy: 0, 0
+  size: 1000, 300
+  orig: 1000, 300
+  offset: 0, 0
+  index: -1
+note_bg
+  rotate: false
+  xy: 1000, 0
+  size: 532, 532
+  orig: 532, 532
+  offset: 0, 0
+  index: -1
+note_pulled_bg
+  rotate: false
+  xy: 0, 532
+  size: 532, 532
+  orig: 532, 532
+  offset: 0, 0
+  index: -1

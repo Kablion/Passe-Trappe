@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -71,6 +72,7 @@ public class WorldStage extends Stage {
     }
 
     public void reset() {
+        Box2D.init();
         world.clearForces();
         getCamera().position.set(0, 0, 0);
 
@@ -106,7 +108,7 @@ public class WorldStage extends Stage {
 
     private void initDisks() {
 
-        int amountPerPlayer = 4;
+        int amountPerPlayer = 5;
         BodyDef jointBodyDef = new BodyDef();
         jointBodyDef.type = BodyDef.BodyType.DynamicBody;
         Body jointBody = world.createBody(jointBodyDef);
@@ -268,15 +270,16 @@ public class WorldStage extends Stage {
 
                     if (!disk.throwedWithoutBand) {
                         contact.setEnabled(false);
-                        if(disk.getBody().getPosition().y > 0) {
+                        /*if(disk.getBody().getPosition().y > 0) {
                             disk.setPlayer(Player.ONE);
                         } else {
                             disk.setPlayer(Player.TWO);
-                        }
+                        }*/
                     } else {
                         // Cheater
                         cheaterDetected = true;
                         cheatingPlayer = disk.getPlayer();
+                        disk.throwedWithoutBand = false;
                     }
 
                 }
@@ -306,7 +309,7 @@ public class WorldStage extends Stage {
     @Override
     public void draw() {
         super.draw();
-        debugRenderer.render(world, getCamera().combined);
+        //debugRenderer.render(world, getCamera().combined);
     }
 
     @Override
@@ -362,9 +365,13 @@ public class WorldStage extends Stage {
     private void validateTouchPosition(Vector2 worldTouch, Player player) {
 
         if (worldTouch.x <= -(BOARD_HALF_WIDTH - DISK_RADIUS)) {
+            // Links außerhalb des Boards
             worldTouch.x = -(BOARD_HALF_WIDTH - DISK_RADIUS);
+            if(Math.abs(worldTouch.y) > BOARD_HALF_HEIGHT-BAND_GAP-BAND_WIDTH) worldTouch.x += BAND_WIDTH;
         } else if (worldTouch.x >= (BOARD_HALF_WIDTH - DISK_RADIUS)) {
+            // Rechts außerhalb des Boards
             worldTouch.x = (BOARD_HALF_WIDTH - DISK_RADIUS);
+            if(Math.abs(worldTouch.y) > BOARD_HALF_HEIGHT-BAND_GAP-BAND_WIDTH) worldTouch.x -= BAND_WIDTH;
         }
 
         if (player == Player.ONE) {
@@ -385,7 +392,7 @@ public class WorldStage extends Stage {
     private QueryCallback queryCallback = new QueryCallback() {
         @Override
         public boolean reportFixture(Fixture fixture) {
-            if (fixture.testPoint(worldTouch.x, worldTouch.y)) {
+            //if (fixture.testPoint(worldTouch.x, worldTouch.y)) {
                 if (fixture.getBody().getUserData() instanceof Disk) {
                     // init Touch Down on Disk
                     Disk disk = (Disk) fixture.getBody().getUserData();
@@ -401,7 +408,7 @@ public class WorldStage extends Stage {
                         return false;
                     }
                 }
-            }
+            //}
             return true;
         }
     };
