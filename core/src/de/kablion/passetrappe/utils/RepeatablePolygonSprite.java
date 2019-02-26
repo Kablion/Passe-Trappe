@@ -298,13 +298,19 @@ public class RepeatablePolygonSprite implements Disposable {
         }
     }
 
-    public void drawDebug(ShapeRenderer shapes, Color color) {
-        if (dirtyGrid) {
+    public void drawDebug(ShapeRenderer shapes, PolygonSpriteBatch batch, Color color) {
+        if (dirtyGrid || parts.size == 0) {
             prepareVertices();
         }
-        if (dirtyAttributes) {
+        if (dirtyAttributes || vertices.size == 0) {
             buildVertices();
         }
+
+        shapes.setTransformMatrix(batch.getTransformMatrix());
+        shapes.setProjectionMatrix(batch.getProjectionMatrix());
+
+        shapes.begin(ShapeRenderer.ShapeType.Line);
+
 
         // draw grid
         for (int i = 0; i < vertices.size; i++) {
@@ -324,12 +330,15 @@ public class RepeatablePolygonSprite implements Disposable {
             }
         }
 
-        //draw cross on grid 0/0
+        //draw cross on grid 0/0 where the texture 0/0 is
         shapes.setColor(Color.RED);
-        shapes.line(textureDebugX - 1, textureDebugY - 1,
-                textureDebugX + 1, textureDebugY + 1);
-        shapes.line(textureDebugX - 1, textureDebugY + 1,
-                textureDebugX + 1, textureDebugY - 1);
+        float halfLineLength = 0.1f;
+        shapes.line(textureDebugX - halfLineLength, textureDebugY - halfLineLength,
+                textureDebugX + halfLineLength, textureDebugY + halfLineLength);
+        shapes.line(textureDebugX - halfLineLength, textureDebugY + halfLineLength,
+                textureDebugX + halfLineLength, textureDebugY - halfLineLength);
+
+        shapes.end();
     }
 
     @Override

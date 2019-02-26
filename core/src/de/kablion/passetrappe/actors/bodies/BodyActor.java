@@ -1,5 +1,6 @@
 package de.kablion.passetrappe.actors.bodies;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,6 +37,7 @@ public class BodyActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         if (sprite != null) {
             sprite.draw((PolygonSpriteBatch) batch);
+            //sprite.drawDebug(app.shapeRenderer, (PolygonSpriteBatch) batch, Color.RED);
         }
     }
 

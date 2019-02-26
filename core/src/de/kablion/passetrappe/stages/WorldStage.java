@@ -115,7 +115,7 @@ public class WorldStage extends Stage {
 
     private void initDisks() {
 
-        int amountPerPlayer = 1;
+        int amountPerPlayer = 5;
         BodyDef jointBodyDef = new BodyDef();
         jointBodyDef.type = BodyDef.BodyType.DynamicBody;
         Body jointBody = world.createBody(jointBodyDef);

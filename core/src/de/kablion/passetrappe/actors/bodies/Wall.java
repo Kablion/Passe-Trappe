@@ -115,7 +115,7 @@ public class Wall extends BodyActor {
         sprite.setTextureRegion(textureRegion,
                 RepeatablePolygonSprite.WrapType.REPEAT_MIRRORED,
                 RepeatablePolygonSprite.WrapType.STRETCH);
-        float textureRatio = textureRegion.getRegionWidth() / textureRegion.getRegionHeight();
+        float textureRatio = (float)textureRegion.getRegionWidth() / (float)(textureRegion.getRegionHeight());
         sprite.setTextureSize(half_width * 2 * textureRatio, 0);
     }
 
