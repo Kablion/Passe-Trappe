@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
 
 import de.kablion.passetrappe.PasseTrappe;
+import de.kablion.passetrappe.stages.EndingStage;
 import de.kablion.passetrappe.stages.HUDStage;
 import de.kablion.passetrappe.stages.MainMenuStage;
 import de.kablion.passetrappe.stages.WorldStage;
@@ -18,9 +19,10 @@ public class GameScreen implements Screen {
     private final PasseTrappe app;
     private InputMultiplexer multiplexer = new InputMultiplexer();
 
-    private WorldStage worldStage;
+    public WorldStage worldStage;
     private MainMenuStage mainMenuStage;
     private HUDStage hudStage;
+    public EndingStage endingStage;
 
     private GameState gameState = GameState.LOADING;
 
@@ -29,6 +31,7 @@ public class GameScreen implements Screen {
         worldStage = new WorldStage(app);
         mainMenuStage = new MainMenuStage(app);
         hudStage = new HUDStage(app);
+        endingStage = new EndingStage(app);
     }
 
     @Override
@@ -39,9 +42,10 @@ public class GameScreen implements Screen {
     }
 
     private void update(float delta) {
-        if(gameState == GameState.PLAY || gameState == GameState.MAINMENU) worldStage.act(delta);
+        if(gameState == GameState.PLAY || gameState == GameState.MAINMENU || gameState == GameState.ENDING) worldStage.act(delta);
         if(gameState == GameState.PLAY) hudStage.act(delta);
         if(gameState == GameState.MAINMENU) mainMenuStage.act(delta);
+        if(gameState == GameState.ENDING) endingStage.act(delta);
     }
 
     @Override
@@ -54,6 +58,7 @@ public class GameScreen implements Screen {
         worldStage.draw();
         if(gameState == GameState.PLAY) hudStage.draw();
         if(gameState == GameState.MAINMENU) mainMenuStage.draw();
+        if(gameState == GameState.ENDING) endingStage.draw();
     }
 
     public void setGameState(GameState gameState) {
@@ -76,6 +81,12 @@ public class GameScreen implements Screen {
                 multiplexer.addProcessor(worldStage);
                 break;
             }
+            case ENDING: {
+                endingStage.reset();
+                multiplexer.clear();
+                multiplexer.addProcessor(endingStage);
+                break;
+            }
         }
         this.gameState = gameState;
     }
@@ -85,6 +96,7 @@ public class GameScreen implements Screen {
         worldStage.resize(width, height);
         hudStage.resize(width, height);
         mainMenuStage.resize(width,height);
+        endingStage.resize(width,height);
     }
 
     @Override
@@ -106,5 +118,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         worldStage.dispose();
         hudStage.dispose();
+        mainMenuStage.dispose();
+        endingStage.dispose();
     }
 }

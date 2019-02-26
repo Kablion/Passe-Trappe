@@ -70,6 +70,17 @@ public class Constants {
 
     public static final float MAINMENU_BUTTON_SIZE = 125;
 
+    // ENDING Dimensions
+    public static final float ENDING_MARGIN_X = 50;
+    public static final float ENDING_MARGIN_Y = 80;
+    public static final float ENDING_WIDTH = UI_WIDTH-MAINMENU_MARGIN_X*2;
+    public static final float ENDING_HEIGHT = UI_HEIGHT-MAINMENU_MARGIN_Y*2;
+
+    public static final float ENDING_TOP_HEIGHT = 125;
+    public static final float ENDING_BOTTOM_HEIGHT = 125;
+
+    public static final float ENDING_BUTTON_SIZE = 125;
+
 
     //PATHS
     public static final String FONTS_PATH = "fonts/";

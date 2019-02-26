@@ -27,6 +27,7 @@ import de.kablion.passetrappe.actors.bodies.ElasticBand;
 import de.kablion.passetrappe.actors.bodies.Ground;
 import de.kablion.passetrappe.actors.bodies.HoleSensor;
 import de.kablion.passetrappe.actors.bodies.Wall;
+import de.kablion.passetrappe.utils.GameState;
 import de.kablion.passetrappe.utils.Player;
 
 import static de.kablion.passetrappe.utils.Constants.BAND_GAP;
@@ -53,11 +54,11 @@ public class WorldStage extends Stage {
 
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
-    private World world = new World(new Vector2(0, 0), true);
+    private World world;
 
-    private Array<Disk> disks = new Array<Disk>();
-    private Array<Wall> walls = new Array<Wall>();
-    private Array<ElasticBand> elasticBands = new Array<ElasticBand>();
+    private Array<Disk> disks;
+    private Array<Wall> walls;
+    private Array<ElasticBand> elasticBands;
     private Ground ground;
     private HoleSensor holeSensor;
     private OnFieldHUD onFieldHUD;
@@ -72,6 +73,12 @@ public class WorldStage extends Stage {
     }
 
     public void reset() {
+        world = new World(new Vector2(0, 0), true);
+        disks = new Array<Disk>();
+        walls = new Array<Wall>();
+        elasticBands = new Array<ElasticBand>();
+
+        clear();
         Box2D.init();
         world.clearForces();
         getCamera().position.set(0, 0, 0);
@@ -108,7 +115,7 @@ public class WorldStage extends Stage {
 
     private void initDisks() {
 
-        int amountPerPlayer = 5;
+        int amountPerPlayer = 1;
         BodyDef jointBodyDef = new BodyDef();
         jointBodyDef.type = BodyDef.BodyType.DynamicBody;
         Body jointBody = world.createBody(jointBodyDef);
@@ -318,6 +325,15 @@ public class WorldStage extends Stage {
         if(cheaterDetected) {
             cheaterDetected = false;
             punishCheater(cheatingPlayer);
+        }
+        if(onFieldHUD.getPlayerCount(Player.ONE) == 0) {
+            //Player ONE wins
+            app.gameScreen.endingStage.winner = Player.ONE;
+            app.gameScreen.setGameState(GameState.ENDING);
+        } else if(onFieldHUD.getPlayerCount(Player.TWO) == 0) {
+            //Player TWO wins
+            app.gameScreen.endingStage.winner = Player.TWO;
+            app.gameScreen.setGameState(GameState.ENDING);
         }
         super.act(delta);
     }

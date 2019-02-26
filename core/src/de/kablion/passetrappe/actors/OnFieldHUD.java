@@ -121,4 +121,9 @@ public class OnFieldHUD extends Group {
         }
 
     }
+
+    public int getPlayerCount(Player player) {
+        if(counts.isEmpty()) return -1;
+        return counts.get(player);
+    }
 }
